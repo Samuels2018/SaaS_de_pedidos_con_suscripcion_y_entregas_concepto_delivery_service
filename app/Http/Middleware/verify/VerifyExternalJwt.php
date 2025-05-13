@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+// env('DB_CONNECTION', 'sqlite')
+
 class VerifyExternalJwt {
   /**
    * Handle an incoming request.
@@ -16,7 +18,7 @@ class VerifyExternalJwt {
     $token = $request->bearerToken();
     
     try {
-      $decoded = JWT::decode($token, new Key(config('services.jwt.secret'), 'HS256'));
+      $decoded = JWT::decode($token, new Key(env('JWT_SECRET', null), env('JWT_ALGORITHM', null)));
       $request->merge([
         'auth_user' => (array)$decoded
       ]);
